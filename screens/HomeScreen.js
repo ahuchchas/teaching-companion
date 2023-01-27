@@ -53,7 +53,7 @@ export default function HomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: GlobalStyles.colors.container,
+    backgroundColor: "#fff",
     flex: 1,
     padding: 12,
   },

@@ -5,10 +5,8 @@ import { GlobalStyles } from "../../constants/styles";
 export default function HomeOption(props) {
   return (
     <View style={styles.option}>
-      <View style={styles.iconContent}>
-        <Ionicons name={props.icon} size={24} color="white" />
-        <Text style={styles.title}>{props.title}</Text>
-      </View>
+      <Ionicons name={props.icon} size={24} color="darkslategrey" />
+      <Text style={styles.title}>{props.title}</Text>
     </View>
   );
 }
@@ -24,6 +22,6 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 20,
-    color: "white",
+    color: "black",
   },
 });

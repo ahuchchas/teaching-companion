@@ -1,8 +1,7 @@
 export const GlobalStyles = {
   colors: {
-    header: "#026969",
-    container: "lightcyan",
-    item: "#346969",
+    header: "teal",
+    item: "paleturquoise",
     primary50: "#e4d9fd",
     primary100: "#c6affc",
     primary200: "#a281f0",
