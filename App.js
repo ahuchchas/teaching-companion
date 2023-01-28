@@ -5,12 +5,40 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./screens/HomeScreen";
 import TeacherRoutine from "./screens/TeacherRoutine";
 import StudentTasks from "./screens/StudentTasks";
+import TaskDetails from "./components/TaskDetails";
 import ManageCourses from "./screens/ManageCourses";
 import ProjectTeams from "./screens/ProjectTeams";
 import AboutScreen from "./screens/AboutScreen";
 import { GlobalStyles } from "./constants/styles";
 
 const Stack = createNativeStackNavigator();
+
+function StudentTasksScreens() {
+  return (
+    <Stack.Navigator
+      initialRouteName="StudentTasks"
+      screenOptions={{
+        headerStyle: { backgroundColor: GlobalStyles.colors.header },
+        headerTintColor: "white",
+      }}
+    >
+      <Stack.Screen
+        name="StudentTasks"
+        component={StudentTasks}
+        options={{
+          title: "Student Tasks",
+        }}
+      />
+      <Stack.Screen
+        name="TaskDetails"
+        component={TaskDetails}
+        options={{
+          title: "Task Details",
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
 
 export default function App() {
   return (
@@ -29,6 +57,8 @@ export default function App() {
             component={HomeScreen}
             options={{
               title: "Home",
+              headerStyle: { backgroundColor: GlobalStyles.colors.header },
+              headerTintColor: "white",
             }}
           />
           <Stack.Screen
@@ -39,11 +69,9 @@ export default function App() {
             }}
           />
           <Stack.Screen
-            name="StudentTasks"
-            component={StudentTasks}
-            options={{
-              title: "Student Tasks",
-            }}
+            name="StudentTasksScreens"
+            component={StudentTasksScreens}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="ManageCourses"

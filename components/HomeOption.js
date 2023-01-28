@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { GlobalStyles } from "../../constants/styles";
+import { GlobalStyles } from "../constants/styles";
 
-export default function HomeOption(props) {
+export default function HomeOption({ icon, title }) {
   return (
     <View style={styles.option}>
-      <Ionicons name={props.icon} size={24} color="darkslategrey" />
-      <Text style={styles.title}>{props.title}</Text>
+      <Ionicons name={icon} size={24} color="darkslategrey" />
+      <Text style={styles.title}>{title}</Text>
     </View>
   );
 }

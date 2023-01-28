@@ -1,5 +1,5 @@
 import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
-import HomeOption from "../components/HomeComponents/HomeOption";
+import HomeOption from "../components/HomeOption";
 import { GlobalStyles } from "../constants/styles";
 
 export default function HomeScreen({ navigation }) {
@@ -14,7 +14,7 @@ export default function HomeScreen({ navigation }) {
       id: "homeOp2",
       title: "Tasks for students",
       icon: "clipboard",
-      navigateTo: () => navigation.navigate("StudentTasks"),
+      navigateTo: () => navigation.navigate("StudentTasksScreens"),
     },
     {
       id: "homeOp3",

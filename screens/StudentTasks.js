@@ -1,8 +1,16 @@
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles } from "../constants/styles";
+import TaskItem from "../components/TaskItem";
+import { useState } from "react";
 
-export default function StudentTasks() {
+export default function StudentTasks({ navigation }) {
   const taskList = [
     {
       id: "task1",
@@ -69,16 +77,23 @@ export default function StudentTasks() {
     },
   ];
 
+  const [tasks, setTasks] = useState(taskList);
+
+  function taskItemPressed() {}
   return (
     <View style={styles.container}>
-      <View style={styles.option}>
-        <Ionicons name="add-circle" size={24} color="darkslategrey" />
-        <Text style={styles.title}>ADD NEW TASK</Text>
-      </View>
+      <TouchableOpacity>
+        <View style={styles.option}>
+          <Ionicons name="add-circle" size={20} color="darkslategrey" />
+          <Text style={styles.title}>ADD NEW TASK</Text>
+        </View>
+      </TouchableOpacity>
       <View style={styles.taskListContainer}>
         <FlatList
-          data={taskList}
-          renderItem={({ item }) => <Text>{item.title}</Text>}
+          data={tasks}
+          renderItem={({ item }) => (
+            <TaskItem title={item.title} deadline={item.deadline} />
+          )}
           keyExtractor={(item) => item.id}
         />
       </View>
@@ -101,7 +116,9 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.item,
     borderRadius: 8,
   },
-  taskListContainer: {},
+  taskListContainer: {
+    flex: 1,
+  },
   title: {
     fontSize: 16,
     color: "black",
