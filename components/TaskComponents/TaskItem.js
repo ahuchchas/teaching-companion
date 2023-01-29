@@ -1,10 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function TaskItem({ title, deadline }) {
+export default function TaskItem({ id, title, deadline }) {
   const navigation = useNavigation();
+  function taskPressHandler() {
+    navigation.navigate("TaskDetails", {
+      taskId: id,
+    });
+  }
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("TaskDetails")}>
+    <TouchableOpacity onPress={taskPressHandler}>
       <View style={styles.option}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.deadline}>Deadline: {deadline.toDateString()}</Text>

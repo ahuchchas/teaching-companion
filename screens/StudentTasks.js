@@ -7,82 +7,16 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles } from "../constants/styles";
-import TaskItem from "../components/TaskItem";
-import { useState } from "react";
+import { TasksContext } from "../store/task-context";
+import { useContext } from "react";
+import TaskItem from "../components/TaskComponents/TaskItem";
 
 export default function StudentTasks({ navigation }) {
-  const taskList = [
-    {
-      id: "task1",
-      title: "Compiler Assignment",
-      description: "Solve the given problems and submit the hardcopy",
-      courseTitle: "Compiler Design",
-      courseCode: "CSE-3315",
-      section: "52",
-      deadline: new Date("2023-02-19"),
-    },
-    {
-      id: "task2",
-      title: "Compiler Assignment",
-      description: "Solve the given problems and submit the hardcopy",
-      courseTitle: "Compiler Design",
-      courseCode: "CSE-3315",
-      section: "52",
-      deadline: new Date("2023-02-19"),
-    },
-    {
-      id: "task3",
-      title: "Compiler Assignment",
-      description: "Solve the given problems and submit the hardcopy",
-      courseTitle: "Compiler Design",
-      courseCode: "CSE-3315",
-      section: "52",
-      deadline: new Date("2023-02-19"),
-    },
-    {
-      id: "task4",
-      title: "Compiler Assignment",
-      description: "Solve the given problems and submit the hardcopy",
-      courseTitle: "Compiler Design",
-      courseCode: "CSE-3315",
-      section: "52",
-      deadline: new Date("2023-02-19"),
-    },
-    {
-      id: "task5",
-      title: "Compiler Assignment",
-      description: "Solve the given problems and submit the hardcopy",
-      courseTitle: "Compiler Design",
-      courseCode: "CSE-3315",
-      section: "52",
-      deadline: new Date("2023-02-19"),
-    },
-    {
-      id: "task6",
-      title: "Compiler Assignment",
-      description: "Solve the given problems and submit the hardcopy",
-      courseTitle: "Compiler Design",
-      courseCode: "CSE-3315",
-      section: "52",
-      deadline: new Date("2023-02-19"),
-    },
-    {
-      id: "task7",
-      title: "Compiler Assignment",
-      description: "Solve the given problems and submit the hardcopy",
-      courseTitle: "Compiler Design",
-      courseCode: "CSE-3315",
-      section: "52",
-      deadline: new Date("2023-02-19"),
-    },
-  ];
+  const tasksCtx = useContext(TasksContext);
 
-  const [tasks, setTasks] = useState(taskList);
-
-  function taskItemPressed() {}
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("TaskForm")}>
         <View style={styles.option}>
           <Ionicons name="add-circle" size={20} color="darkslategrey" />
           <Text style={styles.title}>ADD NEW TASK</Text>
@@ -90,9 +24,13 @@ export default function StudentTasks({ navigation }) {
       </TouchableOpacity>
       <View style={styles.taskListContainer}>
         <FlatList
-          data={tasks}
+          data={tasksCtx.tasks}
           renderItem={({ item }) => (
-            <TaskItem title={item.title} deadline={item.deadline} />
+            <TaskItem
+              id={item.id}
+              title={item.title}
+              deadline={item.deadline}
+            />
           )}
           keyExtractor={(item) => item.id}
         />
