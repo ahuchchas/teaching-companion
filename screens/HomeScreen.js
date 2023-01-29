@@ -26,7 +26,7 @@ export default function HomeScreen({ navigation }) {
       id: "homeOp4",
       title: "Project Teams",
       icon: "people",
-      navigateTo: () => navigation.navigate("ProjectTeams"),
+      navigateTo: () => navigation.navigate("ProjectTeamsScreens"),
     },
     {
       id: "homeOp5",

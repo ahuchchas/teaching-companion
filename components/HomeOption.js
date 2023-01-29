@@ -5,7 +5,7 @@ import { GlobalStyles } from "../constants/styles";
 export default function HomeOption({ icon, title }) {
   return (
     <View style={styles.option}>
-      <Ionicons name={icon} size={24} color="darkslategrey" />
+      <Ionicons name={icon} size={24} color="#fff" />
       <Text style={styles.title}>{title}</Text>
     </View>
   );
@@ -22,6 +22,6 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 20,
-    color: "black",
+    color: "#fff",
   },
 });

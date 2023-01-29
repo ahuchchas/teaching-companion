@@ -6,7 +6,7 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import Button from "../UI/Button";
+import Button from "../../components/UI/Button";
 import { useContext, useState } from "react";
 import { TasksContext } from "../../store/task-context";
 
@@ -86,7 +86,10 @@ export default function TaskForm({ navigation, route }) {
       !sectionIsValid ||
       !deadlineIsValid
     ) {
-      Alert.alert("Invalid input", "Please check your input values");
+      Alert.alert(
+        "Invalid input",
+        "Please check your input values. Make sure that no field is empty and deadline date is in proper format"
+      );
       setInputs((currentInputs) => {
         return {
           title: {

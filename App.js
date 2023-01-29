@@ -4,11 +4,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import HomeScreen from "./screens/HomeScreen";
 import TeacherRoutine from "./screens/TeacherRoutine";
-import StudentTasks from "./screens/StudentTasks";
-import TaskDetails from "./components/TaskComponents/TaskDetails";
-import TaskForm from "./components/TaskComponents/TaskForm";
+import StudentTasks from "./screens/StudentTasksScreens/StudentTasks";
+import TaskDetails from "./screens/StudentTasksScreens/TaskDetails";
+import TaskForm from "./screens/StudentTasksScreens/TaskForm";
 import ManageCourses from "./screens/ManageCourses";
-import ProjectTeams from "./screens/ProjectTeams";
+import ProjectTeams from "./screens/ProjectTeamsScreens/ProjectTeams";
 import AboutScreen from "./screens/AboutScreen";
 import { GlobalStyles } from "./constants/styles";
 import TasksContextProvider from "./store/task-context";
@@ -51,6 +51,25 @@ function StudentTasksScreens() {
   );
 }
 
+function ProjectTeamsScreens() {
+  return (
+    <Stack.Navigator
+      initialRouteName="ProjectTeams"
+      screenOptions={{
+        headerStyle: { backgroundColor: GlobalStyles.colors.header },
+        headerTintColor: "white",
+      }}
+    >
+      <Stack.Screen
+        name="ProjectTeams"
+        component={ProjectTeams}
+        options={{
+          title: "Project Teams",
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
 export default function App() {
   return (
     <>
@@ -92,11 +111,9 @@ export default function App() {
             }}
           />
           <Stack.Screen
-            name="ProjectTeams"
-            component={ProjectTeams}
-            options={{
-              title: "Project Teams",
-            }}
+            name="ProjectTeamsScreens"
+            component={ProjectTeamsScreens}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="AboutScreen"

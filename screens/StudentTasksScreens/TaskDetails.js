@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, ScrollView } from "react-native";
-import Button from "../UI/Button";
+import Button from "../../components/UI/Button";
 import { useContext } from "react";
 import { TasksContext } from "../../store/task-context";
 

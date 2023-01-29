@@ -23,16 +23,17 @@ const styles = StyleSheet.create({
     padding: 18,
     margin: 8,
     elevation: 4,
-    backgroundColor: "darkslategrey",
+    backgroundColor: "#00b3b3",
     borderRadius: 8,
   },
 
   title: {
     fontSize: 20,
-    color: "azure",
+    color: "#fff",
   },
 
   deadline: {
-    color: "coral",
+    color: "brown",
+    fontSize: 16,
   },
 });

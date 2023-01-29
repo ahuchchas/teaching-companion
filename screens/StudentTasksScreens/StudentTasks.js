@@ -6,10 +6,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { GlobalStyles } from "../constants/styles";
-import { TasksContext } from "../store/task-context";
+import { GlobalStyles } from "../../constants/styles";
+import { TasksContext } from "../../store/task-context";
 import { useContext } from "react";
-import TaskItem from "../components/TaskComponents/TaskItem";
+import TaskItem from "../../components/TaskComponents/TaskItem";
 
 export default function StudentTasks({ navigation }) {
   const tasksCtx = useContext(TasksContext);
@@ -18,7 +18,7 @@ export default function StudentTasks({ navigation }) {
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.navigate("TaskForm")}>
         <View style={styles.option}>
-          <Ionicons name="add-circle" size={20} color="darkslategrey" />
+          <Ionicons name="add-circle" size={20} color="#fff" />
           <Text style={styles.title}>ADD NEW TASK</Text>
         </View>
       </TouchableOpacity>
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    color: "black",
+    color: "#fff",
     marginLeft: 6,
     fontWeight: "bold",
   },
