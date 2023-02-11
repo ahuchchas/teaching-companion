@@ -20,7 +20,7 @@ export default function HomeScreen({ navigation }) {
       id: "homeOp3",
       title: "Manage Courses",
       icon: "newspaper",
-      navigateTo: () => navigation.navigate("ManageCourses"),
+      navigateTo: () => navigation.navigate("ManageCoursesScreens"),
     },
     {
       id: "homeOp4",

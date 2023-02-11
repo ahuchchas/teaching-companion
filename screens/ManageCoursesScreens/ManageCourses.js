@@ -7,32 +7,32 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles } from "../../constants/styles";
-import { TasksContext } from "../../store/task-context";
+import { CoursesContext } from "../../store/course-context";
 import { useContext } from "react";
-import TaskItem from "../../components/TaskComponents/TaskItem";
+import CourseItem from "../../components/ManageCourseComponents/CourseItem";
 
-export default function StudentTasks({ navigation }) {
-  const tasksCtx = useContext(TasksContext);
+export default function ManageCourses({ navigation }) {
+  const coursesCtx = useContext(CoursesContext);
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.navigate("TaskForm")}>
+      <TouchableOpacity onPress={() => navigation.navigate("CourseForm")}>
         <View style={styles.option}>
           <Ionicons name="add-circle" size={20} color="#2B5876" />
-          <Text style={styles.title}>ADD NEW TASK</Text>
+          <Text style={styles.title}>ADD NEW COURSE</Text>
         </View>
       </TouchableOpacity>
-      <View style={styles.taskListContainer}>
+      <View style={styles.courseListContainer}>
         <FlatList
-          data={tasksCtx.tasks}
+          data={coursesCtx.courses}
           renderItem={({ item }) => (
-            <TaskItem
-              id={item.id}
-              title={item.title}
-              deadline={item.deadline}
+            <CourseItem
+              courseId={item.courseId}
+              courseTitle={item.courseTitle}
+              courseCode={item.courseCode}
             />
           )}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.courseId}
         />
       </View>
     </View>
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     marginLeft: 6,
     fontWeight: "bold",
   },
-  taskListContainer: {
+  courseListContainer: {
     flex: 1,
   },
 });

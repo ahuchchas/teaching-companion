@@ -4,14 +4,23 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import HomeScreen from "./screens/HomeScreen";
 import TeacherRoutine from "./screens/TeacherRoutine";
+
 import StudentTasks from "./screens/StudentTasksScreens/StudentTasks";
 import TaskDetails from "./screens/StudentTasksScreens/TaskDetails";
 import TaskForm from "./screens/StudentTasksScreens/TaskForm";
-import ManageCourses from "./screens/ManageCourses";
+
+import ManageCourses from "./screens/ManageCoursesScreens/ManageCourses";
+import CourseTopics from "./screens/ManageCoursesScreens/CourseTopics";
+import CourseForm from "./screens/ManageCoursesScreens/CourseForm";
+import TopicForm from "./screens/ManageCoursesScreens/TopicForm";
+
 import ProjectTeams from "./screens/ProjectTeamsScreens/ProjectTeams";
+import ProjectTeamForm from "./screens/ProjectTeamsScreens/ProjectTeamForm";
 import AboutScreen from "./screens/AboutScreen";
 import { GlobalStyles } from "./constants/styles";
 import TasksContextProvider from "./store/task-context";
+import CoursesContextProvider from "./store/course-context";
+import ProjectContextProvider from "./store/project-team-context";
 
 const Stack = createNativeStackNavigator();
 
@@ -51,23 +60,75 @@ function StudentTasksScreens() {
   );
 }
 
+function ManageCoursesScreens() {
+  return (
+    <CoursesContextProvider>
+      <Stack.Navigator
+        initialRouteName="ManageCourses"
+        screenOptions={{
+          headerStyle: { backgroundColor: GlobalStyles.colors.header },
+          headerTintColor: "white",
+        }}
+      >
+        <Stack.Screen
+          name="ManageCourses"
+          component={ManageCourses}
+          options={{
+            title: "Manage Courses",
+          }}
+        />
+        <Stack.Screen
+          name="CourseTopics"
+          component={CourseTopics}
+          options={{
+            title: "Course Topics",
+          }}
+        />
+        <Stack.Screen
+          name="CourseForm"
+          component={CourseForm}
+          options={{
+            title: "Course Details",
+          }}
+        />
+        <Stack.Screen
+          name="TopicForm"
+          component={TopicForm}
+          options={{
+            title: "Topic Details",
+          }}
+        />
+      </Stack.Navigator>
+    </CoursesContextProvider>
+  );
+}
+
 function ProjectTeamsScreens() {
   return (
-    <Stack.Navigator
-      initialRouteName="ProjectTeams"
-      screenOptions={{
-        headerStyle: { backgroundColor: GlobalStyles.colors.header },
-        headerTintColor: "white",
-      }}
-    >
-      <Stack.Screen
-        name="ProjectTeams"
-        component={ProjectTeams}
-        options={{
-          title: "Project Teams",
+    <ProjectContextProvider>
+      <Stack.Navigator
+        initialRouteName="ProjectTeams"
+        screenOptions={{
+          headerStyle: { backgroundColor: GlobalStyles.colors.header },
+          headerTintColor: "white",
         }}
-      />
-    </Stack.Navigator>
+      >
+        <Stack.Screen
+          name="ProjectTeams"
+          component={ProjectTeams}
+          options={{
+            title: "Project Teams",
+          }}
+        />
+        <Stack.Screen
+          name="ProjectTeamForm"
+          component={ProjectTeamForm}
+          options={{
+            title: "Team Form",
+          }}
+        />
+      </Stack.Navigator>
+    </ProjectContextProvider>
   );
 }
 export default function App() {
@@ -104,11 +165,9 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="ManageCourses"
-            component={ManageCourses}
-            options={{
-              title: "Manage Courses",
-            }}
+            name="ManageCoursesScreens"
+            component={ManageCoursesScreens}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="ProjectTeamsScreens"

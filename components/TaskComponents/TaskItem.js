@@ -21,15 +21,15 @@ export default function TaskItem({ id, title, deadline }) {
 const styles = StyleSheet.create({
   option: {
     padding: 18,
-    margin: 8,
-    elevation: 4,
-    backgroundColor: "#00b3b3",
+    margin: 12,
+    backgroundColor: "#9aa6b1",
     borderRadius: 8,
   },
 
   title: {
     fontSize: 20,
-    color: "#fff",
+    fontWeight: "bold",
+    color: "#142a38",
   },
 
   deadline: {

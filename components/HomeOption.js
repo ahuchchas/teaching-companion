@@ -1,11 +1,15 @@
 import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { GlobalStyles } from "../constants/styles";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function HomeOption({ icon, title }) {
   return (
+    // <LinearGradient colors={["#2B5876", "#4E4376"]} style={styles.option}>
+    //   <Ionicons name={icon} size={24} color="#fff" />
+    //   <Text style={styles.title}>{title}</Text>
+    // </LinearGradient>
     <View style={styles.option}>
-      <Ionicons name={icon} size={24} color="#fff" />
+      <Ionicons name={icon} size={24} color="#1b394b" />
       <Text style={styles.title}>{title}</Text>
     </View>
   );
@@ -15,13 +19,13 @@ const styles = StyleSheet.create({
   option: {
     padding: 18,
     marginVertical: 8,
-    elevation: 4,
-    backgroundColor: GlobalStyles.colors.item,
     borderRadius: 8,
+    backgroundColor: "#9aa6b1",
   },
 
   title: {
-    fontSize: 20,
-    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#142a38",
   },
 });
