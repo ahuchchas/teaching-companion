@@ -33,6 +33,8 @@ export default function ManageCourses({ navigation }) {
             />
           )}
           keyExtractor={(item) => item.courseId}
+          numColumns={2}
+          horizontal={false}
         />
       </View>
     </View>
@@ -41,6 +43,7 @@ export default function ManageCourses({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
+    maxWidth: "100%",
     flex: 1,
     backgroundColor: "#fff",
   },

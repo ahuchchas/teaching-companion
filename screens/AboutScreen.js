@@ -1,9 +1,15 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
+import StudentList from "../util/StudentList";
 
 export default function AboutScreen() {
+  const pressHandler = (logtext) => {
+    console.log(logtext);
+  };
+
   return (
     <View style={styles.container}>
-      <Text>About page</Text>
+      <Text>About screen</Text>
+      <StudentList />
     </View>
   );
 }
@@ -11,8 +17,8 @@ export default function AboutScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
 });

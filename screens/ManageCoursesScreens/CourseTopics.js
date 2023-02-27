@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { GlobalStyles } from "../../constants/styles";
 import { CoursesContext } from "../../store/course-context";
 import { useContext } from "react";
 import TopicItem from "../../components/ManageCourseComponents/TopicItem";

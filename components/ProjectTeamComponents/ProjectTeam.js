@@ -10,7 +10,6 @@ import React from "react";
 import { useState } from "react";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import email from "react-native-email";
-import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 function sendMail(mailAddress, msg) {
   email(mailAddress, {
@@ -42,7 +41,7 @@ export default function ProjectTeam({ info }) {
 
   return (
     <TouchableOpacity onPress={PressHandler}>
-      <LinearGradient colors={["#69a3c9", "#897cb6"]} style={Styles.containar}>
+      <View style={Styles.containar}>
         <View>
           <Text style={Styles.title}>Team Name: {info.name}</Text>
           <Text>Batch:{info.Batch}</Text>
@@ -54,7 +53,7 @@ export default function ProjectTeam({ info }) {
               <MaterialCommunityIcons
                 name="account-group"
                 size={20}
-                color="silver"
+                color="#2B5876"
                 onPress={() => sendMail(msg)}
               />
               <Text>
@@ -63,7 +62,7 @@ export default function ProjectTeam({ info }) {
               <AntDesign
                 name={!showTeamMebers ? "downcircle" : "upcircle"}
                 size={14}
-                color="black"
+                color="#2B5876"
               />
             </View>
           </TouchableOpacity>
@@ -80,14 +79,14 @@ export default function ProjectTeam({ info }) {
               <MaterialCommunityIcons
                 name="email"
                 size={20}
-                color="silver"
+                color="#2B5876"
                 onPress={() => sendMail(info.Email, msg)}
               />
               <Text>Send Mail </Text>
               <AntDesign
                 name={!showMsgOption ? "downcircle" : "upcircle"}
                 size={14}
-                color="black"
+                color="#2B5876"
               />
             </View>
           </TouchableOpacity>
@@ -111,7 +110,7 @@ export default function ProjectTeam({ info }) {
                       <MaterialCommunityIcons
                         name="send"
                         size={20}
-                        color="teal"
+                        color="silver"
                         onPress={() => sendMail(info.Email, msg)}
                       />
                     </View>
@@ -121,20 +120,20 @@ export default function ProjectTeam({ info }) {
             </View>
           )}
         </View>
-      </LinearGradient>
+      </View>
     </TouchableOpacity>
   );
 }
 
 const Styles = StyleSheet.create({
   containar: {
-    backgroundColor: "teal",
+    backgroundColor: "#dfe4f2",
     padding: 30,
     marginBottom: 10,
-    borderRadius: 8,
+    borderRadius: 5,
   },
   title: {
-    color: "white",
+    color: "#2B5876",
     fontSize: 14,
   },
 
@@ -143,14 +142,14 @@ const Styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     borderWidth: 2,
-    borderColor: "silver",
+    borderColor: "#2B5876",
     padding: 5,
     marginVertical: 8,
     borderRadius: 8,
   },
   members: {
     padding: 10,
-    backgroundColor: "silver",
+    backgroundColor: "#2B5876",
     borderRadius: 5,
   },
 
@@ -162,6 +161,6 @@ const Styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 8,
     borderBottomWidth: 1,
-    borderBottomColor: "teal",
+    borderBottomColor: "silver",
   },
 });

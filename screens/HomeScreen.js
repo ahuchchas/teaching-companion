@@ -13,25 +13,31 @@ export default function HomeScreen({ navigation }) {
     {
       id: "homeOp2",
       title: "Tasks for students",
-      icon: "clipboard",
+      icon: "clipboard-outline",
       navigateTo: () => navigation.navigate("StudentTasksScreens"),
     },
     {
       id: "homeOp3",
       title: "Manage Courses",
-      icon: "newspaper",
+      icon: "newspaper-outline",
       navigateTo: () => navigation.navigate("ManageCoursesScreens"),
     },
     {
       id: "homeOp4",
-      title: "Project Teams",
-      icon: "people",
-      navigateTo: () => navigation.navigate("ProjectTeamsScreens"),
+      title: "Todos",
+      icon: "calendar-outline",
+      navigateTo: () => navigation.navigate("TodoScreens"),
     },
     {
       id: "homeOp5",
+      title: "Project Teams",
+      icon: "people-outline",
+      navigateTo: () => navigation.navigate("ProjectTeamsScreens"),
+    },
+    {
+      id: "homeOp6",
       title: "About the app",
-      icon: "information-circle",
+      icon: "information-circle-outline",
       navigateTo: () => navigation.navigate("AboutScreen"),
     },
   ];

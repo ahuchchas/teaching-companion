@@ -5,10 +5,14 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import Button from "../../components/UI/Button";
 import { useContext, useState } from "react";
 import { TasksContext } from "../../store/task-context";
+import { storeTask, updateTask } from "../../util/httpStudentTask";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { Feather } from "@expo/vector-icons";
 
 export default function TaskForm({ navigation, route }) {
   const tasksCtx = useContext(TasksContext);
@@ -41,9 +45,7 @@ export default function TaskForm({ navigation, route }) {
       isValid: true,
     },
     deadline: {
-      value: selectedTask
-        ? selectedTask.deadline.toISOString().slice(0, 10)
-        : "",
+      value: selectedTask ? selectedTask.deadline : new Date(),
       isValid: true,
     },
   });
@@ -60,14 +62,14 @@ export default function TaskForm({ navigation, route }) {
     });
   }
 
-  function submitHandler() {
+  async function submitHandler() {
     const taskData = {
       title: inputs.title.value,
       description: inputs.description.value,
       courseTitle: inputs.courseTitle.value,
       courseCode: inputs.courseCode.value,
       section: inputs.section.value,
-      deadline: new Date(inputs.deadline.value),
+      deadline: inputs.deadline.value,
     };
 
     const titleIsValid = taskData.title.trim().length > 0;
@@ -124,11 +126,15 @@ export default function TaskForm({ navigation, route }) {
 
     if (isEditing) {
       tasksCtx.updateTask(selectedTaskId, taskData);
+      await updateTask(selectedTaskId, taskData);
     } else {
-      tasksCtx.addTask(taskData);
+      const id = await storeTask(taskData);
+      tasksCtx.addTask({ id: id, ...taskData });
     }
     navigation.goBack();
   }
+
+  const [showPicker, setShowPicker] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -180,13 +186,36 @@ export default function TaskForm({ navigation, route }) {
         />
 
         <Text style={styles.key}>Submission deadline:</Text>
-        <TextInput
-          style={styles.value}
-          placeholder="YYYY-MM-DD"
-          value={inputs.deadline.value}
-          onChangeText={(enteredValue) =>
-            inputChangedHandler("deadline", enteredValue)
-          }
+        <View
+          style={[
+            styles.value,
+            { flexDirection: "row", justifyContent: "space-between" },
+          ]}
+        >
+          <Text>{inputs.deadline.value.toString().slice(0, 24)}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              setShowPicker(!showPicker);
+            }}
+          >
+            <Feather name="edit" size={24} color="teal" />
+          </TouchableOpacity>
+        </View>
+
+        <DateTimePickerModal
+          isVisible={showPicker}
+          mode={"datetime"}
+          date={new Date(inputs.deadline.value)}
+          //timeZoneOffsetInMinutes={60 * 6}
+          onConfirm={(date) => {
+            //console.log(date.getTimezoneOffset());
+            const enteredValue = date;
+            inputChangedHandler("deadline", enteredValue);
+            setShowPicker(!showPicker);
+          }}
+          onCancel={() => {
+            setShowPicker(!showPicker);
+          }}
         />
 
         <View style={styles.buttonContainer}>
@@ -210,12 +239,23 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   value: {
-    borderWidth: 1,
-    borderColor: "darkcyan",
-    borderRadius: 4,
+    borderBottomWidth: 1,
+    borderBottomColor: "darkcyan",
+    backgroundColor: "#f2f2f2",
     fontSize: 16,
     padding: 8,
     margin: 4,
+  },
+  changeDeadline: {
+    textAlign: "center",
+    backgroundColor: "#cccccc",
+    width: "50%",
+    alignSelf: "center",
+    padding: 4,
+    margin: 6,
+    borderRadius: 8,
+    borderWidth: 2,
+    fontSize: 16,
   },
   buttonContainer: {
     flexDirection: "row",

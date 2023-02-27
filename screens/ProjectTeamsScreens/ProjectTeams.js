@@ -5,12 +5,31 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import { useContext } from "react";
 import ProjectTeam from "../../components/ProjectTeamComponents/ProjectTeam";
 import { ProjectContext } from "../../store/project-team-context";
 import { Ionicons } from "@expo/vector-icons";
+import { fetchProjectTeamData } from "../../util/httpProjectTeam";
+import { useEffect, useState, useContext } from "react";
+import LoadingOverlay from "../../components/UI/LoadingOverlay";
+
 export default function ProjectTeams({ navigation }) {
   const TeamContx = useContext(ProjectContext);
+
+  const [isFetching, setIsFetching] = useState(false);
+
+  useEffect(() => {
+    async function getTeamData() {
+      setIsFetching(true);
+      const projectTeams = await fetchProjectTeamData();
+      TeamContx.setTeamData(projectTeams);
+      setIsFetching(false);
+    }
+    getTeamData();
+  }, []);
+
+  if (isFetching) {
+    return <LoadingOverlay message="Loading Project Teams..." />;
+  }
 
   return (
     <View style={styles.container}>

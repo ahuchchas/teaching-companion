@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Entypo, AntDesign, MaterialIcons } from "@expo/vector-icons";
 
 export default function TopicItem({
   topicId,
@@ -14,22 +15,23 @@ export default function TopicItem({
         <View style={{ maxWidth: 200 }}>
           <Text style={styles.topicName}>{topicName}</Text>
           <Text style={styles.classNeeded}>Reuired classes: {classNeeded}</Text>
+          <TouchableOpacity onPress={() => deleteTopicHandler(topicId)}>
+            <MaterialIcons name="delete" size={24} color="tomato" />
+          </TouchableOpacity>
         </View>
         <View style={{ alignItems: "center" }}>
           <Text style={styles.status}>Status</Text>
-          <Text style={{ fontWeight: "bold" }}>
+          <Text style={{ fontWeight: "bold", marginBottom: 12 }}>
             {isCompleted ? "Done" : "Due"}
           </Text>
+          <TouchableOpacity onPress={() => changeTopicHandler(topicId)}>
+            {isCompleted ? (
+              <AntDesign name="checkcircle" size={24} color="#00B761" />
+            ) : (
+              <Entypo name="circle" size={24} color="#00B761" />
+            )}
+          </TouchableOpacity>
         </View>
-      </View>
-      <View style={styles.rowView}>
-        <TouchableOpacity onPress={() => deleteTopicHandler(topicId)}>
-          <Text style={styles.delete}>Delete</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => changeTopicHandler(topicId)}>
-          <Text style={styles.change}>Change Status</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
   option: {
     padding: 16,
     margin: 12,
-    backgroundColor: "#9aa6b1",
+    backgroundColor: "#f1f1f1",
     borderRadius: 8,
   },
   rowView: {
@@ -64,18 +66,6 @@ const styles = StyleSheet.create({
   classNeeded: {
     fontSize: 16,
     color: "#333333",
-  },
-  delete: {
-    color: "wheat",
-    padding: 8,
-    fontWeight: "bold",
-    backgroundColor: "#e94957",
-    borderRadius: 4,
-  },
-  change: {
-    color: "wheat",
-    padding: 8,
-    backgroundColor: "teal",
-    borderRadius: 4,
+    marginBottom: 12,
   },
 });

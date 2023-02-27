@@ -1,6 +1,12 @@
+import { useContext } from "react";
 import { StatusBar } from "expo-status-bar";
+
+import { TouchableOpacity, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import LoginScreen from "./screens/LoginScreen";
+import SignupScreen from "./screens/SignupScreen";
 
 import HomeScreen from "./screens/HomeScreen";
 import TeacherRoutine from "./screens/TeacherRoutine";
@@ -17,10 +23,18 @@ import TopicForm from "./screens/ManageCoursesScreens/TopicForm";
 import ProjectTeams from "./screens/ProjectTeamsScreens/ProjectTeams";
 import ProjectTeamForm from "./screens/ProjectTeamsScreens/ProjectTeamForm";
 import AboutScreen from "./screens/AboutScreen";
-import { GlobalStyles } from "./constants/styles";
+import { GlobalStyles, Colors } from "./constants/styles";
 import TasksContextProvider from "./store/task-context";
 import CoursesContextProvider from "./store/course-context";
 import ProjectContextProvider from "./store/project-team-context";
+import AuthContextProvider from "./store/auth-context";
+import { AuthContext } from "./store/auth-context";
+
+import TodoContextProvider from "./store/todo-context";
+import AllTodos from "./screens/TodoScreens/AllTodos";
+import TodaysTodos from "./screens/TodoScreens/TodaysTodos";
+import UpcomingSevenDaysTodo from "./screens/TodoScreens/UpcomingSevenDaysTodo";
+import TodoForm from "./screens/TodoScreens/TodoForm";
 
 const Stack = createNativeStackNavigator();
 
@@ -131,58 +145,160 @@ function ProjectTeamsScreens() {
     </ProjectContextProvider>
   );
 }
+
+function TodoScreens() {
+  return (
+    <TodoContextProvider>
+      <Stack.Navigator
+        initialRouteName="AllTodos"
+        screenOptions={{
+          headerStyle: { backgroundColor: GlobalStyles.colors.header },
+          headerTintColor: "white",
+        }}
+      >
+        <Stack.Screen
+          name="AllTodos"
+          component={AllTodos}
+          options={{
+            title: "All Todos",
+          }}
+        />
+        <Stack.Screen
+          name="TodaysTodos"
+          component={TodaysTodos}
+          options={{
+            title: "Todays Todos",
+          }}
+        />
+
+        <Stack.Screen
+          name="UpcomingSevenDaysTodo"
+          component={UpcomingSevenDaysTodo}
+          options={{
+            title: "UpComing 7 days Todo",
+          }}
+        />
+
+        <Stack.Screen
+          name="TodoForm"
+          component={TodoForm}
+          options={{
+            title: "Todo Form",
+          }}
+        />
+      </Stack.Navigator>
+    </TodoContextProvider>
+  );
+}
+// Authentication part
+
+function AuthStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: GlobalStyles.colors.header },
+        headerTintColor: "white",
+        contentStyle: { backgroundColor: "white" },
+      }}
+    >
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Signup" component={SignupScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function AuthenticatedStack() {
+  const authCtx = useContext(AuthContext);
+  return (
+    <Stack.Navigator
+      initialRouteName="HomeScreen"
+      screenOptions={{
+        headerStyle: { backgroundColor: GlobalStyles.colors.header },
+        headerTintColor: "white",
+      }}
+    >
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          title: "Home",
+          headerStyle: { backgroundColor: GlobalStyles.colors.header },
+          headerTintColor: "white",
+          headerRight: ({ tintColor }) => (
+            <TouchableOpacity onPress={authCtx.logout}>
+              <Text
+                style={{
+                  color: tintColor,
+                  fontWeight: "bold",
+                  borderColor: "white",
+                  borderWidth: 1,
+                  borderRadius: 4,
+                  padding: 6,
+                }}
+              >
+                Logout
+              </Text>
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="TeacherRoutine"
+        component={TeacherRoutine}
+        options={{
+          title: "Teacher Routine",
+        }}
+      />
+      <Stack.Screen
+        name="StudentTasksScreens"
+        component={StudentTasksScreens}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ManageCoursesScreens"
+        component={ManageCoursesScreens}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="TodoScreens"
+        component={TodoScreens}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ProjectTeamsScreens"
+        component={ProjectTeamsScreens}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AboutScreen"
+        component={AboutScreen}
+        options={{
+          title: "About",
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function Navigation() {
+  const authCtx = useContext(AuthContext);
+
+  return (
+    <NavigationContainer>
+      {!authCtx.isAuthenticated && <AuthStack />}
+      {authCtx.isAuthenticated && <AuthenticatedStack />}
+    </NavigationContainer>
+  );
+}
+
 export default function App() {
+  const authCtx = useContext(AuthContext);
   return (
     <>
-      <StatusBar style="auto" />
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="HomeScreen"
-          screenOptions={{
-            headerStyle: { backgroundColor: GlobalStyles.colors.header },
-            headerTintColor: "white",
-          }}
-        >
-          <Stack.Screen
-            name="HomeScreen"
-            component={HomeScreen}
-            options={{
-              title: "Home",
-              headerStyle: { backgroundColor: GlobalStyles.colors.header },
-              headerTintColor: "white",
-            }}
-          />
-          <Stack.Screen
-            name="TeacherRoutine"
-            component={TeacherRoutine}
-            options={{
-              title: "Teacher Routine",
-            }}
-          />
-          <Stack.Screen
-            name="StudentTasksScreens"
-            component={StudentTasksScreens}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ManageCoursesScreens"
-            component={ManageCoursesScreens}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ProjectTeamsScreens"
-            component={ProjectTeamsScreens}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="AboutScreen"
-            component={AboutScreen}
-            options={{
-              title: "About",
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <StatusBar style="light" />
+      <AuthContextProvider>
+        <Navigation />
+      </AuthContextProvider>
     </>
   );
 }

@@ -1,7 +1,17 @@
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import { StyleSheet, View, Text, ScrollView, Alert } from "react-native";
 import Button from "../../components/UI/Button";
 import { useContext } from "react";
 import { TasksContext } from "../../store/task-context";
+import { deleteTask } from "../../util/httpStudentTask";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 export default function TaskDetails({ navigation, route }) {
   const tasksCtx = useContext(TasksContext);
@@ -11,9 +21,31 @@ export default function TaskDetails({ navigation, route }) {
     (task) => task.id === selectedTaskId
   );
 
-  function deletePressHandler() {
+  async function scheduledNotificationHandler(mins) {
+    let date = selectedTask.deadline;
+    date.setMinutes(date.getMinutes() - mins);
+    let title = selectedTask.title + " for " + selectedTask.section;
+    let body = "Deadline is : " + selectedTask.deadline.toString().slice(0, 16);
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: title,
+        body: body,
+        //sound: "mySoundFile.wav", // Provide ONLY the base filename
+      },
+      trigger: {
+        date: date,
+      },
+    });
+    Alert.alert(
+      "Done",
+      `You will be notified ${mins} minutes before the deadline`
+    );
+  }
+
+  async function deletePressHandler() {
     tasksCtx.deleteTask(selectedTaskId);
     navigation.goBack();
+    await deleteTask(selectedTaskId);
   }
   function editPressHandler() {
     navigation.navigate("TaskForm", { taskId: selectedTaskId });
@@ -38,12 +70,19 @@ export default function TaskDetails({ navigation, route }) {
 
         <Text style={styles.key}>Submission deadline:</Text>
         <Text style={styles.value}>
-          {selectedTask.deadline.toISOString().slice(0, 10)}
+          {selectedTask.deadline.toString().slice(0, 16)} |{"  "}
+          {selectedTask.deadline.toString().slice(16, 24)}
         </Text>
+
+        <Button
+          title="Set reminder"
+          color={"darkcyan"}
+          onPress={() => scheduledNotificationHandler(5)}
+        />
 
         <View style={styles.buttonContainer}>
           <Button title="Edit" color="darkcyan" onPress={editPressHandler} />
-          <Button title="Delete" color="salmon" onPress={deletePressHandler} />
+          <Button title="Delete" color="brown" onPress={deletePressHandler} />
         </View>
       </ScrollView>
     </View>
@@ -63,8 +102,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   value: {
-    backgroundColor: "lightgray",
-    borderRadius: 4,
+    backgroundColor: "#f2f2f2",
     fontSize: 16,
     padding: 8,
     margin: 4,

@@ -12,7 +12,11 @@ import React from "react";
 import { useContext, useState } from "react";
 import { ProjectContext } from "../../store/project-team-context";
 import { AntDesign } from "@expo/vector-icons";
-
+import { storeProjectTeams } from "../../util/httpProjectTeam";
+import {
+  updateProjectTeams,
+  deleteProjectTeams,
+} from "../../util/httpProjectTeam";
 const ProjectTeamForm = ({ route, navigation }) => {
   const ProjectTeamCntx = useContext(ProjectContext);
   const selectedTeamId = route.params?.id;
@@ -69,14 +73,15 @@ const ProjectTeamForm = ({ route, navigation }) => {
   }
 
   function deleteHandler() {
+    deleteProjectTeams(selectedTeamId);
     ProjectTeamCntx.deleteTeam(selectedTeamId);
     navigation.goBack();
   }
-  function cancelHandler() {
+  /*  function cancelHandler() {
     navigation.goBack();
   }
-
-  function submitHandler() {
+*/
+  async function submitHandler() {
     const Teamdata = {
       Batch: inputs.Batch.value,
       name: inputs.name.value,
@@ -93,7 +98,7 @@ const ProjectTeamForm = ({ route, navigation }) => {
     const TeamMemberTwoIsValid = Teamdata.TeamMemberTwo.trim().length > 0;
     const TeamMemberThreeIsValid = Teamdata.TeamMemberThree.trim().length > 0;
     const EmailIsValid = Teamdata.Email.trim().length > 0;
-    const appoinmentIsValid = Teamdata.toString() !== "Invalid Date";
+    const appoinmentIsValid = Teamdata.appoinment.toString() !== "Invalid Date";
 
     if (
       !BatchIsValid ||
@@ -143,8 +148,10 @@ const ProjectTeamForm = ({ route, navigation }) => {
 
     if (isEditing) {
       ProjectTeamCntx.updateTeam(selectedTeamId, Teamdata);
+      await updateProjectTeams(selectedTeamId, Teamdata);
     } else {
-      ProjectTeamCntx.addTeam(Teamdata);
+      const id = await storeProjectTeams(Teamdata);
+      ProjectTeamCntx.addTeam({ ...Teamdata, id: id });
     }
     navigation.goBack();
   }
@@ -246,9 +253,6 @@ const ProjectTeamForm = ({ route, navigation }) => {
               {isEditing ? "Update" : " Add"}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={cancelHandler}>
-            <Text style={[styles.button, styles.cancelButton]}>{"Cancel"}</Text>
-          </TouchableOpacity>
 
           <TouchableOpacity onPress={deleteHandler}>
             <Text style={[styles.button, styles.deleteButton]}>Delete</Text>
@@ -275,7 +279,7 @@ const styles = StyleSheet.create({
   },
   value: {
     borderWidth: 1,
-    borderColor: "darkcyan",
+    borderColor: "#2B5876",
     borderRadius: 4,
     fontSize: 16,
     padding: 8,
@@ -306,19 +310,14 @@ const styles = StyleSheet.create({
     color: "white",
   },
   addButton: {
-    backgroundColor: "teal",
-  },
-  deleteButton: {
-    backgroundColor: "tomato",
+    backgroundColor: "#2B5876",
   },
 
   updateButton: {
-    backgroundColor: "cornflowerblue",
-  },
-  cancelButton: {
     backgroundColor: "teal",
   },
+
   deleteButton: {
-    backgroundColor: "tomato",
+    backgroundColor: "#c4495f",
   },
 });

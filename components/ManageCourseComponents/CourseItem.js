@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { CoursesContext } from "../../store/course-context";
 import { useContext } from "react";
+import { Feather } from "@expo/vector-icons";
 
 export default function CourseItem({ courseId, courseTitle, courseCode }) {
   const coursesCtx = useContext(CoursesContext);
@@ -24,25 +25,26 @@ export default function CourseItem({ courseId, courseTitle, courseCode }) {
   return (
     <TouchableOpacity onPress={coursePressHandler}>
       <View style={styles.option}>
-        <View style={styles.rowView}>
-          <View style={{ maxWidth: 200 }}>
-            <Text style={styles.courseTitle}>{courseTitle}</Text>
-            <Text style={styles.courseCode}>{courseCode}</Text>
-          </View>
-          <View style={{ alignItems: "center" }}>
-            <Text style={styles.progress}>Progress</Text>
-            <Text style={{ fontWeight: "bold" }}>{progress.toFixed(2)}%</Text>
-          </View>
+        <View style={{ maxWidth: 200 }}>
+          <Text style={styles.courseTitle}>{courseTitle}</Text>
+          <Text style={styles.courseCode}>{courseCode}</Text>
         </View>
-        <View>
+        <View style={{ alignItems: "center", marginVertical: 12 }}>
+          <Text style={styles.progress}>Progress</Text>
+          <Text style={{ fontWeight: "bold" }}>{progress.toFixed(2)}%</Text>
+        </View>
+
+        <View style={{ maxWidth: 200, marginVertical: 12 }}>
           <Text>Required classes for the course: {requiredClasses}</Text>
         </View>
         <TouchableOpacity
+          style={styles.rowView}
           onPress={() =>
             navigation.navigate("CourseForm", { courseId: courseId })
           }
         >
           <Text style={styles.editBtn}>Edit Course</Text>
+          <Feather name="edit" size={16} color="teal" />
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
@@ -51,16 +53,16 @@ export default function CourseItem({ courseId, courseTitle, courseCode }) {
 
 const styles = StyleSheet.create({
   option: {
-    padding: 18,
-    margin: 12,
-    backgroundColor: "#9aa6b1",
+    padding: 12,
+    margin: 8,
+    backgroundColor: "#F1F1F1",
     borderRadius: 8,
   },
   rowView: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: 20,
+    alignItems: "center",
+    marginVertical: 4,
   },
   progress: {
     fontSize: 16,
@@ -83,10 +85,5 @@ const styles = StyleSheet.create({
 
   editBtn: {
     color: "teal",
-    marginTop: 8,
-    paddingTop: 8,
-    textAlign: "center",
-    borderTopColor: "gray",
-    borderTopWidth: 1,
   },
 });

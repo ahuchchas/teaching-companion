@@ -1,7 +1,20 @@
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-export default function TaskItem({ id, title, deadline }) {
+export default function TaskItem({
+  id,
+  title,
+  deadline,
+  courseTitle,
+  section,
+}) {
   const navigation = useNavigation();
   function taskPressHandler() {
     navigation.navigate("TaskDetails", {
@@ -9,31 +22,54 @@ export default function TaskItem({ id, title, deadline }) {
     });
   }
   return (
-    <TouchableOpacity onPress={taskPressHandler}>
-      <View style={styles.option}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.deadline}>Deadline: {deadline.toDateString()}</Text>
-      </View>
-    </TouchableOpacity>
+    <View style={styles.option}>
+      <Pressable
+        onPress={taskPressHandler}
+        android_ripple={{ color: "black", borderless: true }}
+        style={{ padding: 18 }}
+      >
+        <Text style={styles.title}>Task name: {title}</Text>
+        <Text>Course Title: {courseTitle}</Text>
+        <Text>Batch and Section: {section}</Text>
+        <View style={styles.deadlineBox}>
+          <MaterialCommunityIcons
+            name="calendar-clock-outline"
+            size={24}
+            color="brown"
+          />
+          <Text style={styles.deadline}>
+            Deadline: {deadline.toString().slice(0, 16)} |{"  "}
+            {deadline.toString().slice(16, 24)}
+          </Text>
+        </View>
+      </Pressable>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   option: {
-    padding: 18,
     margin: 12,
-    backgroundColor: "#9aa6b1",
+    backgroundColor: "#f1f1f1",
     borderRadius: 8,
+    elevation: 4,
   },
-
   title: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
-    color: "#142a38",
+    color: "black",
+    borderBottomColor: "teal",
+    borderBottomWidth: 1,
+    paddingBottom: 6,
+    marginBottom: 6,
   },
-
+  deadlineBox: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 16,
+    paddingTop: 6,
+  },
   deadline: {
-    color: "brown",
     fontSize: 16,
   },
 });

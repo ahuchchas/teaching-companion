@@ -1,29 +1,6 @@
 import { createContext } from "react";
 import { useReducer } from "react";
 
-const DummyTeams = [
-  {
-    id: "1",
-    name: "LU ATT",
-    Batch: "52",
-    TeamMemberOne: "Md. Shahinur Rahman",
-    TeamMemberTwo: "Taslima Hussain Enas",
-    TeamMemberThree: "Amira Mostofa Chowdhury",
-    Email: "tahsinchowdhuryupoma@gmail.com",
-    appoinment: new Date("2023-03-03"),
-  },
-  {
-    id: "2",
-    name: "LU STA",
-    Batch: "56",
-    TeamMemberOne: "Md. Shahinur Rahman",
-    TeamMemberTwo: "Taslima Hussain Enas",
-    TeamMemberThree: "Amira Mostofa Chowdhury",
-    Email: "cse_1932020044@lus.ac.bd",
-    appoinment: new Date("2023-03-21"),
-  },
-];
-
 export const ProjectContext = createContext({
   projectTeams: [],
   addTeam: ({
@@ -36,6 +13,7 @@ export const ProjectContext = createContext({
     appoinment,
   }) => {},
   deleteTeam: (id) => {},
+  setTeamData: (projectTeams) => {},
   updateTeam: (
     id,
     {
@@ -53,10 +31,12 @@ export const ProjectContext = createContext({
 function TeamReducer(state, action) {
   switch (action.type) {
     case "ADD":
-      const id = new Date().toString() + Math.random().toString();
-      return [{ ...action.payload, id: id }, ...state];
+      return [action.payload, ...state];
     case "DELETE":
       return state.filter((team) => team.id !== action.payload);
+    case "SET":
+      const inverted = action.payload.reverse();
+      return inverted;
     case "UPDATE":
       const updateableIndex = state.findIndex(
         (team) => team.id === action.payload.id
@@ -71,7 +51,7 @@ function TeamReducer(state, action) {
   }
 }
 export default function ProjectContextProvider({ children }) {
-  const [teamState, dispatch] = useReducer(TeamReducer, DummyTeams);
+  const [teamState, dispatch] = useReducer(TeamReducer, []);
   function addTeam(teamData) {
     dispatch({ type: "ADD", payload: teamData });
   }
@@ -84,9 +64,13 @@ export default function ProjectContextProvider({ children }) {
     dispatch({ type: "UPDATE", payload: { id: id, data: teamData } });
   }
 
+  function setTeamData(projectTeams) {
+    dispatch({ type: "SET", payload: projectTeams });
+  }
   const value = {
     projectTeams: teamState,
     addTeam: addTeam,
+    setTeamData: setTeamData,
     updateTeam: updateTeam,
     deleteTeam: deleteTeam,
   };
