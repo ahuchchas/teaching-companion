@@ -11,12 +11,14 @@ import {
 import React from "react";
 import { useContext, useState } from "react";
 import { ProjectContext } from "../../store/project-team-context";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Feather } from "@expo/vector-icons";
 import { storeProjectTeams } from "../../util/httpProjectTeam";
 import {
   updateProjectTeams,
   deleteProjectTeams,
 } from "../../util/httpProjectTeam";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+
 const ProjectTeamForm = ({ route, navigation }) => {
   const ProjectTeamCntx = useContext(ProjectContext);
   const selectedTeamId = route.params?.id;
@@ -53,9 +55,7 @@ const ProjectTeamForm = ({ route, navigation }) => {
     },
 
     appoinment: {
-      value: selectedTeam
-        ? selectedTeam.appoinment.toISOString().slice(0, 10)
-        : "",
+      value: selectedTeam ? selectedTeam.appoinment : new Date(),
       isValid: true,
     },
   });
@@ -95,8 +95,8 @@ const ProjectTeamForm = ({ route, navigation }) => {
     const BatchIsValid = Teamdata.Batch.trim().length > 0;
     const NameIsValid = Teamdata.name.trim().length > 0;
     const TeamMemberOneIsValid = Teamdata.TeamMemberOne.trim().length > 0;
-    const TeamMemberTwoIsValid = Teamdata.TeamMemberTwo.trim().length > 0;
-    const TeamMemberThreeIsValid = Teamdata.TeamMemberThree.trim().length > 0;
+    //const TeamMemberTwoIsValid = Teamdata.TeamMemberTwo.trim().length > 0;
+    //const TeamMemberThreeIsValid = Teamdata.TeamMemberThree.trim().length > 0;
     const EmailIsValid = Teamdata.Email.trim().length > 0;
     const appoinmentIsValid = Teamdata.appoinment.toString() !== "Invalid Date";
 
@@ -104,8 +104,6 @@ const ProjectTeamForm = ({ route, navigation }) => {
       !BatchIsValid ||
       !NameIsValid ||
       !TeamMemberOneIsValid ||
-      !TeamMemberTwoIsValid ||
-      !TeamMemberThreeIsValid ||
       !EmailIsValid ||
       !appoinmentIsValid
     ) {
@@ -126,11 +124,11 @@ const ProjectTeamForm = ({ route, navigation }) => {
           },
           TeamMemberTwo: {
             value: currentInputValue.TeamMemberTwo.value,
-            isValid: TeamMemberTwoIsValid,
+            isValid: true,
           },
           TeamMemberThree: {
             value: currentInputValue.TeamMemberThree.value,
-            isValid: TeamMemberThreeIsValid,
+            isValid: true,
           },
           Email: {
             value: currentInputValue.Email.value,
@@ -155,13 +153,13 @@ const ProjectTeamForm = ({ route, navigation }) => {
     }
     navigation.goBack();
   }
-
+  const [showPicker, setShowPicker] = useState(false);
   return (
     <View style={styles.container}>
       <ScrollView>
         <Text style={styles.key}>Project Team Name :</Text>
         <TextInput
-          style={styles.value}
+          style={[styles.value, !inputs.name.isValid && styles.errorStyle]}
           onChangeText={(enteredValue) => {
             inputChangedHandler("name", enteredValue);
           }}
@@ -170,26 +168,49 @@ const ProjectTeamForm = ({ route, navigation }) => {
 
         <Text style={styles.key}>Email Address:</Text>
         <TextInput
-          style={styles.value}
+          style={[styles.value, !inputs.Email.isValid && styles.errorStyle]}
           onChangeText={(enteredValue) => {
             inputChangedHandler("Email", enteredValue);
           }}
           value={inputs.Email.value}
         />
 
-        <Text style={styles.key}>Appoinment Date:</Text>
-        <TextInput
-          style={styles.value}
-          placeholder="YYYY-MM-DD"
-          onChangeText={(enteredValue) => {
+        <Text style={styles.key}>Appointment Date:</Text>
+        <View
+          style={[
+            styles.value,
+            { flexDirection: "row", justifyContent: "space-between" },
+          ]}
+        >
+          <Text>{inputs.appoinment.value.toString().slice(0, 24)}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              setShowPicker(!showPicker);
+            }}
+          >
+            <Feather name="edit" size={24} color="teal" />
+          </TouchableOpacity>
+        </View>
+
+        <DateTimePickerModal
+          isVisible={showPicker}
+          mode={"datetime"}
+          date={new Date(inputs.appoinment.value)}
+          //timeZoneOffsetInMinutes={60 * 6}
+          onConfirm={(date) => {
+            //console.log(date.getTimezoneOffset());
+            const enteredValue = date;
             inputChangedHandler("appoinment", enteredValue);
+            setShowPicker(!showPicker);
           }}
-          value={inputs.appoinment.value}
+          onCancel={() => {
+            setShowPicker(!showPicker);
+          }}
         />
 
         <Text style={styles.key}>Batch :</Text>
         <TextInput
-          style={styles.value}
+          style={[styles.value, !inputs.Batch.isValid && styles.errorStyle]}
           onChangeText={(enteredValue) => {
             inputChangedHandler("Batch", enteredValue);
           }}
@@ -217,7 +238,10 @@ const ProjectTeamForm = ({ route, navigation }) => {
           <View>
             <TextInput
               placeholder="1"
-              style={styles.value}
+              style={[
+                styles.value,
+                !inputs.TeamMemberOne.isValid && styles.errorStyle,
+              ]}
               onChangeText={(enteredValue) => {
                 inputChangedHandler("TeamMemberOne", enteredValue);
               }}
@@ -254,9 +278,11 @@ const ProjectTeamForm = ({ route, navigation }) => {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={deleteHandler}>
-            <Text style={[styles.button, styles.deleteButton]}>Delete</Text>
-          </TouchableOpacity>
+          {isEditing && (
+            <TouchableOpacity onPress={deleteHandler}>
+              <Text style={[styles.button, styles.deleteButton]}>Delete</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
     </View>
@@ -284,6 +310,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 8,
     margin: 4,
+  },
+  errorStyle: {
+    backgroundColor: "#ffd6cc",
   },
   buttonContainer: {
     flexDirection: "row",

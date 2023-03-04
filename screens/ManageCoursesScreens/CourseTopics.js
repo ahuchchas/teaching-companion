@@ -9,6 +9,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { CoursesContext } from "../../store/course-context";
 import { useContext } from "react";
 import TopicItem from "../../components/ManageCourseComponents/TopicItem";
+import { deleteCourse, updateCourse } from "../../util/httpCourse";
+import { arrayToObject } from "../../util/converter";
 
 export default function CourseTopics({ navigation, route }) {
   const coursesCtx = useContext(CoursesContext);
@@ -17,16 +19,29 @@ export default function CourseTopics({ navigation, route }) {
     (course) => course.courseId === courseId
   );
 
-  function deleteCourseHandler() {
+  async function deleteCourseHandler() {
     coursesCtx.deleteCourse(courseId);
     navigation.goBack();
+    await deleteCourse(courseId);
   }
 
-  function deleteTopicHandler(topicId) {
-    coursesCtx.deleteTopic(courseId, topicId);
+  async function deleteTopicHandler(topicId) {
+    await coursesCtx.deleteTopic(courseId, topicId);
+
+    let courseData = coursesCtx.courses.find((c) => c.courseId === courseId);
+    const newTopicList = arrayToObject(courseData.topicList);
+
+    courseData = { ...courseData, topicList: newTopicList };
+
+    await updateCourse(courseId, courseData);
   }
-  function changeTopicHandler(topicId) {
-    coursesCtx.markTopic(courseId, topicId);
+  async function changeTopicHandler(topicId) {
+    await coursesCtx.markTopic(courseId, topicId);
+    let courseData = coursesCtx.courses.find((c) => c.courseId === courseId);
+    const newTopicList = arrayToObject(courseData.topicList);
+    courseData = { ...courseData, topicList: newTopicList };
+
+    await updateCourse(courseId, courseData);
   }
 
   return (

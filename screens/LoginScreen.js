@@ -36,8 +36,10 @@ function LoginScreen() {
         <FontAwesome5 name="chalkboard-teacher" size={48} color="#152a37" />
         <Text style={styles.welcome}>Welcome to "Teaching Companion"</Text>
         <Text>Manage your teaching activities easily</Text>
-        <Text>Please Login to continue using the app.</Text>
       </View>
+      <Text style={{ textAlign: "center", marginTop: 48 }}>
+        Please log in to continue using the app.
+      </Text>
       <AuthContent isLogin onAuthenticate={loginHandler} />
     </ScrollView>
   );
@@ -54,6 +56,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "#152a37",
-    marginVertical: 24,
+    marginTop: 24,
   },
 });

@@ -1,15 +1,15 @@
-import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 import HomeOption from "../components/HomeOption";
 import { GlobalStyles } from "../constants/styles";
 
 export default function HomeScreen({ navigation }) {
   const homeOptionList = [
-    {
-      id: "homeOp1",
-      title: "See Routine",
-      icon: "calendar",
-      navigateTo: () => navigation.navigate("TeacherRoutine"),
-    },
     {
       id: "homeOp2",
       title: "Tasks for students",
@@ -24,7 +24,7 @@ export default function HomeScreen({ navigation }) {
     },
     {
       id: "homeOp4",
-      title: "Todos",
+      title: "To-do",
       icon: "calendar-outline",
       navigateTo: () => navigation.navigate("TodoScreens"),
     },
@@ -45,6 +45,17 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <FlatList
+        ListHeaderComponent={
+          <>
+            <View style={styles.textBox}>
+              <Text style={styles.text1}>Welcome</Text>
+              <Text style={styles.text2}>Dear user,</Text>
+              <Text style={styles.text3}>
+                Please select your desired service from below.
+              </Text>
+            </View>
+          </>
+        }
         keyExtractor={(item) => item.id}
         data={homeOptionList}
         renderItem={({ item }) => (
@@ -63,4 +74,21 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
   },
+  textBox: {
+    marginTop: 20,
+    marginLeft: 8,
+    marginBottom: 36,
+    height: 130,
+    width: 200,
+    borderBottomWidth: 1,
+    borderBottomColor: "teal",
+  },
+  text1: {
+    fontSize: 28,
+    marginBottom: 12,
+  },
+  text2: {
+    fontSize: 18,
+  },
+  text3: {},
 });

@@ -69,9 +69,9 @@ export default function ProjectTeam({ info }) {
 
           {showTeamMebers && (
             <View style={Styles.members}>
-              <Text>{info.TeamMemberOne}</Text>
-              <Text>{info.TeamMemberTwo}</Text>
-              <Text>{info.TeamMemberThree}</Text>
+              <Text style={{ color: "white" }}>{info.TeamMemberOne}</Text>
+              <Text style={{ color: "white" }}>{info.TeamMemberTwo}</Text>
+              <Text style={{ color: "white" }}>{info.TeamMemberThree}</Text>
             </View>
           )}
           <TouchableOpacity onPress={() => setShowMsgOption(!showMsgOption)}>
@@ -92,6 +92,9 @@ export default function ProjectTeam({ info }) {
           </TouchableOpacity>
           {showMsgOption && (
             <View style={Styles.members}>
+              <Text style={{ color: "white", marginBottom: 6 }}>
+                Press on a message & then press send button
+              </Text>
               <FlatList
                 keyExtractor={(item) => item.id}
                 data={messages}
@@ -104,7 +107,12 @@ export default function ProjectTeam({ info }) {
                     }}
                   >
                     <View style={Styles.msg}>
-                      <Text style={{ backgroundColor: { msgcolor } }}>
+                      <Text
+                        style={{
+                          backgroundColor: { msgcolor },
+                          color: "wheat",
+                        }}
+                      >
                         {item.title}
                       </Text>
                       <MaterialCommunityIcons
@@ -127,6 +135,7 @@ export default function ProjectTeam({ info }) {
 
 const Styles = StyleSheet.create({
   containar: {
+    minWidth: "90%",
     backgroundColor: "#dfe4f2",
     padding: 30,
     marginBottom: 10,

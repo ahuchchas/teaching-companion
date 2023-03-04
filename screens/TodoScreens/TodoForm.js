@@ -94,10 +94,6 @@ const TodoForm = ({ navigation, route }) => {
     if (!TitleIsValid || !DescriptionIsValid) {
       Alert.alert("Invalid Input", "Please check your input values");
       setInputs((currentInputValue) => {
-        let timeval =
-          currentInputValue.date.getHours() +
-          ":" +
-          currentInputValue.date.getMinutes();
         return {
           title: {
             value: currentInputValue.title.value,
@@ -173,7 +169,7 @@ const TodoForm = ({ navigation, route }) => {
         <View>
           <Text style={styles.key}>Title:</Text>
           <TextInput
-            style={styles.value}
+            style={[styles.value, !inputs.title.isValid && styles.errorStyle]}
             placeholder="Todo Title"
             value={inputs.title.value}
             onChangeText={(enteredValue) =>
@@ -183,7 +179,11 @@ const TodoForm = ({ navigation, route }) => {
           <Text style={styles.key}>Description:</Text>
           <TextInput
             multiline
-            style={[styles.value, styles.description]}
+            style={[
+              styles.value,
+              styles.description,
+              !inputs.description.isValid && styles.errorStyle,
+            ]}
             value={inputs.description.value}
             placeholder="Todo Description"
             onChangeText={(enteredValue) =>
@@ -326,6 +326,9 @@ const styles = StyleSheet.create({
     padding: 8,
     margin: 8,
     backgroundColor: "#e1f0f7",
+  },
+  errorStyle: {
+    backgroundColor: "#ffd6cc",
   },
   buttonContainer: {
     flexDirection: "row",

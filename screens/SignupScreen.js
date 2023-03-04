@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Alert, ScrollView, View } from "react-native";
+import { Alert, ScrollView, View, Text } from "react-native";
 
 import AuthContent from "../components/Auth/AuthContent";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
@@ -31,6 +31,9 @@ function SignupScreen() {
 
   return (
     <ScrollView>
+      <Text style={{ textAlign: "center", marginTop: 48 }}>
+        Signup for a new account.
+      </Text>
       <AuthContent onAuthenticate={signupHandler} />
     </ScrollView>
   );

@@ -9,7 +9,6 @@ import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
 
 import HomeScreen from "./screens/HomeScreen";
-import TeacherRoutine from "./screens/TeacherRoutine";
 
 import StudentTasks from "./screens/StudentTasksScreens/StudentTasks";
 import TaskDetails from "./screens/StudentTasksScreens/TaskDetails";
@@ -242,13 +241,7 @@ function AuthenticatedStack() {
           ),
         }}
       />
-      <Stack.Screen
-        name="TeacherRoutine"
-        component={TeacherRoutine}
-        options={{
-          title: "Teacher Routine",
-        }}
-      />
+
       <Stack.Screen
         name="StudentTasksScreens"
         component={StudentTasksScreens}
@@ -292,7 +285,6 @@ function Navigation() {
 }
 
 export default function App() {
-  const authCtx = useContext(AuthContext);
   return (
     <>
       <StatusBar style="light" />

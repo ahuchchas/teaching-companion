@@ -90,7 +90,7 @@ export default function TaskForm({ navigation, route }) {
     ) {
       Alert.alert(
         "Invalid input",
-        "Please check your input values. Make sure that no field is empty and deadline date is in proper format"
+        "Please check your input values. Make sure that no field is empty."
       );
       setInputs((currentInputs) => {
         return {
@@ -141,7 +141,7 @@ export default function TaskForm({ navigation, route }) {
       <ScrollView>
         <Text style={styles.key}>Task title:</Text>
         <TextInput
-          style={styles.value}
+          style={[styles.value, !inputs.title.isValid && styles.errorStyle]}
           value={inputs.title.value}
           onChangeText={(enteredValue) =>
             inputChangedHandler("title", enteredValue)
@@ -151,7 +151,10 @@ export default function TaskForm({ navigation, route }) {
         <Text style={styles.key}>Task description:</Text>
         <TextInput
           multiline
-          style={styles.value}
+          style={[
+            styles.value,
+            !inputs.description.isValid && styles.errorStyle,
+          ]}
           value={inputs.description.value}
           onChangeText={(enteredValue) =>
             inputChangedHandler("description", enteredValue)
@@ -160,7 +163,10 @@ export default function TaskForm({ navigation, route }) {
 
         <Text style={styles.key}>Course title:</Text>
         <TextInput
-          style={styles.value}
+          style={[
+            styles.value,
+            !inputs.courseTitle.isValid && styles.errorStyle,
+          ]}
           value={inputs.courseTitle.value}
           onChangeText={(enteredValue) =>
             inputChangedHandler("courseTitle", enteredValue)
@@ -169,7 +175,10 @@ export default function TaskForm({ navigation, route }) {
 
         <Text style={styles.key}>Course code:</Text>
         <TextInput
-          style={styles.value}
+          style={[
+            styles.value,
+            !inputs.courseCode.isValid && styles.errorStyle,
+          ]}
           value={inputs.courseCode.value}
           onChangeText={(enteredValue) =>
             inputChangedHandler("courseCode", enteredValue)
@@ -178,7 +187,7 @@ export default function TaskForm({ navigation, route }) {
 
         <Text style={styles.key}>Batch and section:</Text>
         <TextInput
-          style={styles.value}
+          style={[styles.value, !inputs.section.isValid && styles.errorStyle]}
           value={inputs.section.value}
           onChangeText={(enteredValue) =>
             inputChangedHandler("section", enteredValue)
@@ -246,16 +255,8 @@ const styles = StyleSheet.create({
     padding: 8,
     margin: 4,
   },
-  changeDeadline: {
-    textAlign: "center",
-    backgroundColor: "#cccccc",
-    width: "50%",
-    alignSelf: "center",
-    padding: 4,
-    margin: 6,
-    borderRadius: 8,
-    borderWidth: 2,
-    fontSize: 16,
+  errorStyle: {
+    backgroundColor: "#ffd6cc",
   },
   buttonContainer: {
     flexDirection: "row",

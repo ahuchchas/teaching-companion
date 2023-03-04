@@ -155,9 +155,12 @@ const DUMMY_COURSES = [
 export const CoursesContext = createContext();
 
 function coursesReducer(state, action) {
-  if (action.type === "ADD") {
-    const courseId = new Date().toString() + Math.random().toString();
-    return [{ ...action.payload, courseId: courseId }, ...state];
+  if (action.type === "SET") {
+    const inverted = action.payload.reverse();
+    return inverted;
+  } else if (action.type === "ADD") {
+    //const courseId = new Date().toString() + Math.random().toString();
+    return [action.payload, ...state];
   } else if (action.type === "DELETE") {
     return state.filter((course) => course.courseId !== action.payload);
   } else if (action.type === "UPDATE") {
@@ -225,7 +228,11 @@ function coursesReducer(state, action) {
 }
 
 export default function CoursesContextProvider({ children }) {
-  const [coursesState, dispatch] = useReducer(coursesReducer, DUMMY_COURSES);
+  const [coursesState, dispatch] = useReducer(coursesReducer, []);
+
+  function setCourses(courses) {
+    dispatch({ type: "SET", payload: courses });
+  }
 
   function addCourse(courseData) {
     dispatch({ type: "ADD", payload: courseData });
@@ -274,6 +281,7 @@ export default function CoursesContextProvider({ children }) {
   }
   const value = {
     courses: coursesState,
+    setCourses: setCourses,
     addCourse: addCourse,
     deleteCourse: deleteCourse,
     updateCourse: updateCourse,

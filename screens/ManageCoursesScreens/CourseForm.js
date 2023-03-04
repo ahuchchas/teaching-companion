@@ -9,6 +9,8 @@ import {
 import Button from "../../components/UI/Button";
 import { useContext, useState } from "react";
 import { CoursesContext } from "../../store/course-context";
+import { storeCourse, updateCourse } from "../../util/httpCourse";
+import { arrayToObject } from "../../util/converter";
 
 export default function CourseForm({ navigation, route }) {
   const coursesCtx = useContext(CoursesContext);
@@ -45,7 +47,7 @@ export default function CourseForm({ navigation, route }) {
     });
   }
 
-  function submitHandler() {
+  async function submitHandler() {
     const courseData = {
       courseTitle: inputs.courseTitle.value,
       courseCode: inputs.courseCode.value,
@@ -81,8 +83,19 @@ export default function CourseForm({ navigation, route }) {
 
     if (isEditing) {
       coursesCtx.updateCourse(selectedCourseId, courseData);
+      const newTopicList = arrayToObject(courseData.topicList);
+      await updateCourse(selectedCourseId, {
+        ...courseData,
+        topicList: newTopicList,
+      });
     } else {
-      coursesCtx.addCourse(courseData);
+      const newTopicList = arrayToObject(courseData.topicList);
+      const courseId = await storeCourse({
+        ...courseData,
+        topicList: newTopicList,
+      });
+      //console.log(courseId);
+      coursesCtx.addCourse({ courseId: courseId, ...courseData });
     }
     navigation.goBack();
   }
@@ -92,7 +105,10 @@ export default function CourseForm({ navigation, route }) {
       <ScrollView>
         <Text style={styles.key}>Course title:</Text>
         <TextInput
-          style={styles.value}
+          style={[
+            styles.value,
+            !inputs.courseTitle.isValid && styles.errorStyle,
+          ]}
           value={inputs.courseTitle.value}
           onChangeText={(enteredValue) =>
             inputChangedHandler("courseTitle", enteredValue)
@@ -101,7 +117,10 @@ export default function CourseForm({ navigation, route }) {
 
         <Text style={styles.key}>Course code:</Text>
         <TextInput
-          style={styles.value}
+          style={[
+            styles.value,
+            !inputs.courseCode.isValid && styles.errorStyle,
+          ]}
           value={inputs.courseCode.value}
           onChangeText={(enteredValue) =>
             inputChangedHandler("courseCode", enteredValue)
@@ -135,6 +154,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 8,
     margin: 4,
+  },
+  errorStyle: {
+    backgroundColor: "#ffd6cc",
   },
   buttonContainer: {
     flexDirection: "row",

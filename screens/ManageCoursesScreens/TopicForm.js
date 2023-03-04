@@ -9,6 +9,8 @@ import {
 import Button from "../../components/UI/Button";
 import { useContext, useState } from "react";
 import { CoursesContext } from "../../store/course-context";
+import { updateCourse } from "../../util/httpCourse";
+import { arrayToObject } from "../../util/converter";
 
 export default function TopicForm({ navigation, route }) {
   const coursesCtx = useContext(CoursesContext);
@@ -41,7 +43,7 @@ export default function TopicForm({ navigation, route }) {
     });
   }
 
-  function submitHandler() {
+  async function submitHandler() {
     const topicData = {
       topicName: inputs.topicName.value,
       classNeeded: inputs.classNeeded.value,
@@ -76,7 +78,17 @@ export default function TopicForm({ navigation, route }) {
       return;
     }
 
-    coursesCtx.addTopic(courseId, topicData);
+    await coursesCtx.addTopic(courseId, topicData);
+
+    let courseData = coursesCtx.courses.find((c) => c.courseId === courseId);
+    //console.log(courseData);
+
+    const newTopicList = arrayToObject(courseData.topicList);
+    //console.log(newTopicList);
+    courseData = { ...courseData, topicList: newTopicList };
+    //console.log(courseData);
+
+    await updateCourse(courseId, courseData);
 
     navigation.goBack();
   }
@@ -86,7 +98,7 @@ export default function TopicForm({ navigation, route }) {
       <ScrollView>
         <Text style={styles.key}>Topic Name:</Text>
         <TextInput
-          style={styles.value}
+          style={[styles.value, !inputs.topicName.isValid && styles.errorStyle]}
           value={inputs.topicName.value}
           onChangeText={(enteredValue) =>
             inputChangedHandler("topicName", enteredValue)
@@ -95,7 +107,10 @@ export default function TopicForm({ navigation, route }) {
 
         <Text style={styles.key}>Required classes to complete the topic:</Text>
         <TextInput
-          style={styles.value}
+          style={[
+            styles.value,
+            !inputs.classNeeded.isValid && styles.errorStyle,
+          ]}
           value={inputs.classNeeded.value}
           onChangeText={(enteredValue) =>
             inputChangedHandler("classNeeded", enteredValue)
@@ -129,6 +144,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 8,
     margin: 4,
+  },
+  errorStyle: {
+    backgroundColor: "#ffd6cc",
   },
   buttonContainer: {
     flexDirection: "row",

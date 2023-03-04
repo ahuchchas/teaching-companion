@@ -1,6 +1,13 @@
-import { StyleSheet, View, Text, ScrollView, Alert } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  Alert,
+  TextInput,
+} from "react-native";
 import Button from "../../components/UI/Button";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { TasksContext } from "../../store/task-context";
 import { deleteTask } from "../../util/httpStudentTask";
 import * as Notifications from "expo-notifications";
@@ -50,6 +57,9 @@ export default function TaskDetails({ navigation, route }) {
   function editPressHandler() {
     navigation.navigate("TaskForm", { taskId: selectedTaskId });
   }
+
+  const [mins, setMins] = useState(0);
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -74,10 +84,22 @@ export default function TaskDetails({ navigation, route }) {
           {selectedTask.deadline.toString().slice(16, 24)}
         </Text>
 
+        <Text style={styles.key}>Get reminder before ? minutes:</Text>
+        <TextInput
+          style={{
+            borderColor: "teal",
+            borderWidth: 1,
+            borderRadius: 4,
+            marginBottom: 12,
+            paddingHorizontal: 6,
+          }}
+          onChangeText={(val) => setMins(val)}
+        />
+
         <Button
           title="Set reminder"
           color={"darkcyan"}
-          onPress={() => scheduledNotificationHandler(5)}
+          onPress={() => scheduledNotificationHandler(mins)}
         />
 
         <View style={styles.buttonContainer}>

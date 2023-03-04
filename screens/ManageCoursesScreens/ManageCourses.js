@@ -6,13 +6,31 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { GlobalStyles } from "../../constants/styles";
 import { CoursesContext } from "../../store/course-context";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import CourseItem from "../../components/ManageCourseComponents/CourseItem";
+import LoadingOverlay from "../../components/UI/LoadingOverlay";
+import { fetchCourses } from "../../util/httpCourse";
 
 export default function ManageCourses({ navigation }) {
   const coursesCtx = useContext(CoursesContext);
+
+  const [isFetching, setIsFetching] = useState(false);
+
+  useEffect(() => {
+    async function getCourses() {
+      setIsFetching(true);
+      const courses = await fetchCourses();
+      coursesCtx.setCourses(courses);
+      setIsFetching(false);
+    }
+
+    getCourses();
+  }, []);
+
+  if (isFetching) {
+    return <LoadingOverlay message="Loading Courses..." />;
+  }
 
   return (
     <View style={styles.container}>
