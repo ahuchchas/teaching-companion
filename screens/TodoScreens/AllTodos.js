@@ -38,9 +38,8 @@ const AllTodos = () => {
             style={styles.button}
           >
             <Text style={{ textAlign: "center", color: "white" }}>
-              Todays Todo
+              Today's To-dos
             </Text>
-            <AntDesign name="arrowright" size={20} color="white" />
           </TouchableOpacity>
         </View>
         <View>
@@ -49,9 +48,8 @@ const AllTodos = () => {
             style={styles.button}
           >
             <Text style={{ textAlign: "center", color: "white" }}>
-              7 Days Todo
+              Next 7 Day's To-dos
             </Text>
-            <AntDesign name="arrowright" size={20} color="white" />
           </TouchableOpacity>
         </View>
       </View>
@@ -83,7 +81,7 @@ const styles = StyleSheet.create({
     color: "white",
     width: 150,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
   },
   option: {
     flexDirection: "row",

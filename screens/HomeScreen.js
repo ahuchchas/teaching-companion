@@ -49,7 +49,7 @@ export default function HomeScreen({ navigation }) {
           <>
             <View style={styles.textBox}>
               <Text style={styles.text1}>Welcome</Text>
-              <Text style={styles.text2}>Dear user,</Text>
+              <Text style={styles.text2}></Text>
               <Text style={styles.text3}>
                 Please select your desired service from below.
               </Text>

@@ -34,7 +34,7 @@ export default function AboutScreen() {
       <Text style={{ marginTop: 28 }}>Contact us:</Text>
       <Text>abuhurayrauchchas@gmail.com</Text>
       <Text>tahsinchowdhuryupoma@gmail.com</Text>
-      <Text>tarekaziz9@gmail.com</Text>
+      <Text>tarekcse.lus@gmail.com</Text>
     </View>
   );
 }
